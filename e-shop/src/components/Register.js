@@ -1,6 +1,7 @@
 // src/components/Register.js
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
@@ -86,7 +87,7 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/register', {
+      const response = await axios.post('http://localhost:5000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -260,7 +261,7 @@ const Register = () => {
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
                 I agree to the{' '}
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="/termsandconditions" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Terms and Conditions
                 </a>
               </label>

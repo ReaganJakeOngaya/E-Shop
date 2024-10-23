@@ -1,40 +1,43 @@
 import React from 'react'
-import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon } from '@heroicons/react/24/outline'
+import { BanknotesIcon, CubeIcon, RocketLaunchIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline'
 
 
 const features = [
   {
-    name: 'Push to deploy',
+    name: 'Pick Your Best Products',
     description:
-      'Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi. Odio urna massa nunc massa.',
-    icon: CloudArrowUpIcon,
+      'Browse our selection and choose the products that best meet your needs. Whether it’s quality, price, or style, we have something for everyone.',
+    icon: CubeIcon,
   },
   {
-    name: 'SSL certificates',
+    name: 'Pay Your Deposit',
     description:
-      'Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget. Sem sodales gravida quam turpis enim lacus amet.',
-    icon: LockClosedIcon,
+      'Secure your order with a quick and easy deposit. We offer flexible payment options to suit your budget and ensure your products are reserved.',
+    icon: BanknotesIcon,
   },
   {
-    name: 'Simple queues',
+    name: 'Choose Type of Shipment',
     description:
-      'Quisque est vel vulputate cursus. Risus proin diam nunc commodo. Lobortis auctor congue commodo diam neque.',
-    icon: ArrowPathIcon,
+      'Select your preferred shipping method, from standard delivery to express options, to get your products when and how you need them.',
+    icon: RocketLaunchIcon,
   },
   {
-    name: 'Advanced security',
+    name: 'Product Pickup and Deliveries',
     description:
-      'Arcu egestas dolor vel iaculis in ipsum mauris. Tincidunt mattis aliquet hac quis. Id hac maecenas ac donec pharetra eget.',
-    icon: FingerPrintIcon,
+      'Once your order is ready, you can choose to pick it up from our store or have it delivered straight to your doorstep. We ensure safe and timely deliveries.',
+    icon: BuildingOffice2Icon,
   },
-]
+];
+
+
+
 function Home() {
   return (
     <div> 
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Announcing our next round of funding.{' '}
+              Announcing our next round of shipping.{' '}
               <a href="#" className="font-semibold text-indigo-600">
                 <span aria-hidden="true" className="absolute inset-0" />
                 Read more <span aria-hidden="true">&rarr;</span>
@@ -43,12 +46,8 @@ function Home() {
           </div>
           <div className="text-center">
             <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Data to enrich your online business
+              Products to enrich both your shop and online business.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
-              fugiat veniam occaecat fugiat aliqua.
-            </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
@@ -77,9 +76,9 @@ function Home() {
         <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2>
+          <h2 className="text-base font-semibold leading-7 text-indigo-600">Fast Shipment</h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need to deploy your app
+            Everything you need to Boost your Store.
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum
@@ -108,11 +107,11 @@ function Home() {
   <div className="mx-auto max-w-7xl px-6 lg:px-8">
     <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
       <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-        <dt className="text-base leading-7 text-gray-600">Transactions every 24 hours</dt>
-        <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">44 million</dd>
+        <dt className="text-base leading-7 text-gray-600">Available products</dt>
+        <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">4.4 million</dd>
       </div>
       <div className="mx-auto flex max-w-xs flex-col gap-y-4">
-        <dt className="text-base leading-7 text-gray-600">Assets under holding</dt>
+        <dt className="text-base leading-7 text-gray-600"> Annual Transactions</dt>
         <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">$119 trillion</dd>
       </div>
       <div className="mx-auto flex max-w-xs flex-col gap-y-4">
@@ -122,6 +121,7 @@ function Home() {
     </dl>
   </div>
 </div>
+
 
     </div>
     </div>

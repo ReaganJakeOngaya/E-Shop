@@ -1,7 +1,8 @@
 // src/components/Login.js
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+ 
 
   const validateForm = () => {
     const newErrors = {};
@@ -51,23 +52,28 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoginError('');
+  e.preventDefault();
+  setLoginError('');
+  if (!validateForm()) {
+    return;
+  }
 
-    if (!validateForm()) {
-      return;
-    }
+  setIsLoading(true);
+  try {
+    const response = await axios.post('http://localhost:5000/api/login', {
+      email: formData.email,
+      password: formData.password
+    });
+    alert(response.data.message);
+    localStorage.setItem('token', response.data.token); // Store token
+    navigate('/'); // Redirect to home page after successful login
+  } catch (error) {
+    setLoginError('Invalid email or password. Please try again.', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
-    setIsLoading(true);
-    try {
-      await login(formData.email, formData.password);
-      navigate('/'); // Redirect to home page after successful login
-    } catch (error) {
-      setLoginError('Invalid email or password. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 # Configuration
 app.config['SECRET_KEY'] = 'your-secret-key'  # Change this to a secure key
