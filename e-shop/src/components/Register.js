@@ -1,22 +1,22 @@
 // src/components/Register.js
-import React, { useState, useContext } from 'react';
+import React, { useState} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [registrationError, setRegistrationError] = useState('');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  
 
   const validateForm = () => {
     const newErrors = {};
@@ -33,6 +33,13 @@ const Register = () => {
       newErrors.lastName = 'Last name is required';
     } else if (formData.lastName.length < 2) {
       newErrors.lastName = 'Last name must be at least 2 characters';
+    }
+
+     // userName validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.length < 2) {
+      newErrors.username = 'Username must be at least 2 characters';
     }
 
     // Email validation
@@ -79,7 +86,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setRegistrationError('');
 
     if (!validateForm()) {
       return;
@@ -87,30 +93,27 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-
-      // Automatically log in after successful registration
-      await login(formData.email, formData.password);
-      navigate('/'); // Redirect to home page
-    } catch (error) {
-      setRegistrationError('Registration failed. Please try again.');
+      const response = await axios.post('http://localhost:5000/register', formData);
+      alert(response.data.message);
+      navigate('/home');
+    } catch (errors) {
+      alert("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
+  //   try {
+  //   const response = await axios.post('http://localhost:5000/login', {
+  //     email: formData.email,
+  //     password: formData.password
+  //   });
+  //   alert(response.data.message);
+  //   localStorage.setItem('token', response.da.token); // Store token
+  //   navigate('/'); // Redirect to home page after successful login
+  // } catch (error) {
+  //   setLoginError('Invalid email or password. Please try again.', error);
+  // } finally {
+  //   setIsLoading(false);
+  // }
   };
 
   return (
@@ -120,7 +123,7 @@ const Register = () => {
           Create your account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{' '}
+          Already have an account?
           <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
             Sign in
           </Link>
@@ -129,9 +132,9 @@ const Register = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {registrationError && (
+          {errors && (
             <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded relative" role="alert">
-              <span className="block sm:inline">{registrationError}</span>
+              <span className="block sm:inline">{errors}</span>
             </div>
           )}
 
@@ -181,6 +184,29 @@ const Register = () => {
                     <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
                   )}
                 </div>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <div className="mt-1">
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  value={formData.username}
+                  onChange={handleChange}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.username ? 'border-red-300' : 'border-gray-300'
+                  } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                />
+                {errors.username && (
+                  <p className="mt-2 text-sm text-red-600">{errors.username}</p>
+                )}
               </div>
             </div>
 
