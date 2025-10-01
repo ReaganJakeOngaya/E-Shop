@@ -1,92 +1,68 @@
-// src/services/api.js
+import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Utility function to handle fetch calls
-const fetchWithAuth = async (endpoint, options = {}) => {
-    // Get token from localStorage if it exists
-    const token = localStorage.getItem('token');
-    
-    const defaultHeaders = {
-        'Content-Type': 'application/json',
-        // Add Authorization header if token exists
-        ...(token && { 'Authorization': `Bearer ${token}` })
-    };
+// Create axios instance
+export const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            ...options,
-            headers: {
-                ...defaultHeaders,
-                ...options.headers
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('API call failed:', error);
-        throw error;
+// Request interceptor to add auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+// API methods
+export const authAPI = {
+  login: (credentials) => api.post('/auth/login', credentials),
+  signup: (userData) => api.post('/auth/signup', userData),
+  getProfile: () => api.get('/auth/profile'),
 };
 
-// API service object with all the endpoints
-const apiService = {
-    // Auth endpoints
-    login: async (credentials) => {
-        const response = await fetchWithAuth('/login', {
-            method: 'POST',
-            body: JSON.stringify(credentials)
-        });
-        if (response.token) {
-            localStorage.setItem('token', response.token);
-        }
-        return response;
-    },
-
-    register: (userData) => {
-        return fetchWithAuth('/register', {
-            method: 'POST',
-            body: JSON.stringify(userData)
-        });
-    },
-
-    // Product endpoints
-    getProducts: (category = '', search = '') => {
-        const params = new URLSearchParams();
-        if (category) params.append('category', category);
-        if (search) params.append('search', search);
-        
-        return fetchWithAuth(`/products?${params.toString()}`);
-    },
-
-    // Cart endpoints
-    getCart: () => {
-        return fetchWithAuth('/cart');
-    },
-
-    addToCart: (productId, quantity) => {
-        return fetchWithAuth('/cart', {
-            method: 'POST',
-            body: JSON.stringify({ product_id: productId, quantity })
-        });
-    },
-
-    removeFromCart: (productId) => {
-        return fetchWithAuth('/cart', {
-            method: 'DELETE',
-            body: JSON.stringify({ product_id: productId })
-        });
-    },
-
-    // Logout utility
-    logout: () => {
-        localStorage.removeItem('token');
-    }
+export const productsAPI = {
+  getAll: () => api.get('/products'),
+  getById: (id) => api.get(`/products/${id}`),
+  create: (productData) => api.post('/products', productData),
+  update: (id, productData) => api.put(`/products/${id}`, productData),
+  delete: (id) => api.delete(`/products/${id}`),
 };
 
-export default apiService;
+export const cartAPI = {
+  get: () => api.get('/cart'),
+  addItem: (itemData) => api.post('/cart', itemData),
+  updateItem: (itemId, quantity) => api.put(`/cart/${itemId}`, { quantity }),
+  removeItem: (itemId) => api.delete(`/cart/${itemId}`),
+  clear: () => api.delete('/cart/clear'),
+};
+
+export const ordersAPI = {
+  getAll: () => api.get('/orders'),
+  getById: (id) => api.get(`/orders/${id}`),
+  create: (orderData) => api.post('/orders', orderData),
+  cancel: (id) => api.post(`/orders/${id}/cancel`),
+};

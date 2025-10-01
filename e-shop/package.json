@@ -15,8 +15,17 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
-    "tailwindcss": "^3.4.13",
+    "react-query": "^3.39.0",
+    "react-hook-form": "^7.43.0",
+    "react-hot-toast": "^2.4.0",
+    "lucide-react": "^0.294.0",
+    "clsx": "^1.2.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.0",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21"
   },
   "scripts": {
     "start": "react-scripts start",
