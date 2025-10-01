@@ -1,5 +1,5 @@
 # Import models to make them available for migrations
-from .user import User
-from .product import Product
-from .cart import Cart
-from .order import Order
+from app.models.user import User
+from app.models.product import Product
+from app.models.cart import Cart, CartItem
+from app.models.order import Order, OrderItem
